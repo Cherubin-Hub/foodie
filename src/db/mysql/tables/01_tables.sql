@@ -1,0 +1,134 @@
+CREATE DATABASE IF NOT EXISTS foodie_db;
+USE foodie_db;
+
+CREATE TABLE IF NOT EXISTS tbl_system_license (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  app_code VARCHAR(50) NOT NULL UNIQUE,
+  app_secret VARCHAR(100) NOT NULL,
+  request_nonce VARCHAR(10) NOT NULL,
+  installation_request_code VARCHAR(100) NOT NULL,
+  license_key VARCHAR(150),
+  activated_at DATETIME,
+  expires_at DATETIME,
+  last_verified_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_active BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_store_settings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  store_name VARCHAR(100) NOT NULL DEFAULT 'Foodie.',
+  tagline VARCHAR(200) NOT NULL DEFAULT 'Hot meals, right at your door',
+  hero_image_url TEXT NOT NULL,
+  default_address TEXT NOT NULL,
+  primary_color VARCHAR(10) NOT NULL DEFAULT '#2E7D32',
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_roles (
+  role_code VARCHAR(20) PRIMARY KEY,
+  role_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tbl_users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(20),
+  full_name VARCHAR(100) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role_code VARCHAR(20) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (role_code) REFERENCES tbl_roles(role_code) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS tbl_guest_sessions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_token VARCHAR(64) UNIQUE NOT NULL,
+  guest_temporary_name VARCHAR(100) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tbl_modules (
+  module_code VARCHAR(50) PRIMARY KEY,
+  module_name VARCHAR(100) NOT NULL,
+  description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS tbl_role_modules (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  role_code VARCHAR(20) NOT NULL,
+  module_code VARCHAR(50) NOT NULL,
+  can_view BOOLEAN NOT NULL DEFAULT FALSE,
+  can_create BOOLEAN NOT NULL DEFAULT FALSE,
+  can_edit BOOLEAN NOT NULL DEFAULT FALSE,
+  can_delete BOOLEAN NOT NULL DEFAULT FALSE,
+  UNIQUE KEY uq_role_module (role_code, module_code),
+  FOREIGN KEY (role_code) REFERENCES tbl_roles(role_code) ON DELETE CASCADE,
+  FOREIGN KEY (module_code) REFERENCES tbl_modules(module_code) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS tbl_categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  image_url TEXT NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_food_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category_id INT NOT NULL,
+  name VARCHAR(150) NOT NULL,
+  image_url TEXT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  calories INT NOT NULL DEFAULT 0,
+  prep_time_minutes INT NOT NULL DEFAULT 15,
+  is_available BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES tbl_categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS tbl_deals (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  description TEXT NOT NULL,
+  promo_code VARCHAR(50) UNIQUE NOT NULL,
+  discount_percentage DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+  free_delivery BOOLEAN NOT NULL DEFAULT FALSE,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tracking_token VARCHAR(20) UNIQUE NOT NULL,
+  user_id INT NULL,
+  guest_session_token VARCHAR(64) NULL,
+  guest_temporary_name VARCHAR(100),
+  order_type VARCHAR(20) NOT NULL DEFAULT 'DINE_IN',
+  status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+  subtotal DECIMAL(10, 2) NOT NULL,
+  discount_amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+  delivery_fee DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+  total_amount DECIMAL(10, 2) NOT NULL,
+  promo_code VARCHAR(50),
+  delivery_address TEXT,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES tbl_users(id) ON DELETE SET NULL,
+  FOREIGN KEY (guest_session_token) REFERENCES tbl_guest_sessions(session_token) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS tbl_order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  food_item_id INT NOT NULL,
+  item_name VARCHAR(150) NOT NULL,
+  unit_price DECIMAL(10, 2) NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  total_price DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES tbl_orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (food_item_id) REFERENCES tbl_food_items(id) ON DELETE RESTRICT
+);

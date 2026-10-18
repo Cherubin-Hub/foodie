@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS tbl_roles (
+  role_code VARCHAR(20) PRIMARY KEY,
+  role_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tbl_users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(20),
+  full_name VARCHAR(100) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role_code VARCHAR(20) NOT NULL REFERENCES tbl_roles(role_code) ON DELETE RESTRICT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS tbl_guest_sessions (
+  id SERIAL PRIMARY KEY,
+  session_token VARCHAR(64) UNIQUE NOT NULL,
+  guest_temporary_name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  expires_at TIMESTAMPTZ NOT NULL DEFAULT (NOW() + INTERVAL '24 hours')
+);

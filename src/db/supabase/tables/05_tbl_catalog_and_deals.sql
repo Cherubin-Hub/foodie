@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS tbl_categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  image_url TEXT NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS tbl_food_items (
+  id SERIAL PRIMARY KEY,
+  category_id INT NOT NULL REFERENCES tbl_categories(id) ON DELETE CASCADE,
+  name VARCHAR(150) NOT NULL,
+  image_url TEXT NOT NULL,
+  price NUMERIC(10, 2) NOT NULL,
+  calories INT NOT NULL DEFAULT 0,
+  prep_time_minutes INT NOT NULL DEFAULT 15,
+  is_available BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS tbl_deals (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  description TEXT NOT NULL,
+  promo_code VARCHAR(50) UNIQUE NOT NULL,
+  discount_percentage NUMERIC(5, 2) NOT NULL DEFAULT 0.00,
+  free_delivery BOOLEAN NOT NULL DEFAULT FALSE,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
