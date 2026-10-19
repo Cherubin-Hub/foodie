@@ -33,10 +33,13 @@ export function generateLicenseKey(duration: string, nonce: string): string {
 }
 
 // CLI Execution Support
-const args = process.argv.slice(2);
+const isDirectExecution = process.argv[1] && process.argv[1].replace(/\\/g, '/').endsWith('scripts/generate_license_key.ts');
 
-if (args.length === 0) {
-  console.log(`
+if (isDirectExecution) {
+  const args = process.argv.slice(2);
+
+  if (args.length === 0) {
+    console.log(`
 ========================================================================
 FOODIE POS - OFFLINE CRYPTOGRAPHIC LICENSE GENERATOR CLI
 ========================================================================
@@ -77,3 +80,6 @@ Supported Tiers:
     console.error(`\x1b[31mError:\x1b[0m`, err instanceof Error ? err.message : err);
   }
 }
+}
+
+

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently -n API,WEB -c green,cyan \"tsx watch src/server/api_server.ts\" \"vite\"",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "tsx tests/system_verification.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
