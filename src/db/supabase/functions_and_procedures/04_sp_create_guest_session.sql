@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION sp_create_guest_session(p_temp_name VARCHAR(100))
 RETURNS JSON
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
   v_token VARCHAR(64);

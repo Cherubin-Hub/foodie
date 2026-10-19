@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION fn_verify_license_status()
 RETURNS JSON
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
   v_lic RECORD;

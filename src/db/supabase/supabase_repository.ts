@@ -14,6 +14,18 @@ import {
   FoodItem
 } from '../db_types.js';
 
+function parseErrorMessage(err: unknown, fallback: string): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === 'object' && err !== null) {
+    const errorObj = err as { message?: string; details?: string; hint?: string };
+    if (errorObj.message) {
+      return errorObj.hint ? `${errorObj.message} (${errorObj.hint})` : errorObj.message;
+    }
+  }
+  if (typeof err === 'string') return err;
+  return fallback;
+}
+
 export class SupabaseRepository implements IDatabaseRepository {
   private client: SupabaseClient;
 
@@ -32,7 +44,7 @@ export class SupabaseRepository implements IDatabaseRepository {
         success: false,
         status: 'INACTIVE',
         is_usable: false,
-        message: err instanceof Error ? err.message : 'Database error'
+        message: parseErrorMessage(err, 'Database error')
       };
     }
   }
@@ -48,7 +60,7 @@ export class SupabaseRepository implements IDatabaseRepository {
       console.error('[SupabaseRepository] activateLicense Error:', err);
       return {
         success: false,
-        message: err instanceof Error ? err.message : 'Activation error'
+        message: parseErrorMessage(err, 'Activation error')
       };
     }
   }
@@ -106,7 +118,7 @@ export class SupabaseRepository implements IDatabaseRepository {
       console.error('[SupabaseRepository] placeOrder Error:', err);
       return {
         success: false,
-        message: err instanceof Error ? err.message : 'Order placement failed'
+        message: parseErrorMessage(err, 'Order placement failed')
       };
     }
   }

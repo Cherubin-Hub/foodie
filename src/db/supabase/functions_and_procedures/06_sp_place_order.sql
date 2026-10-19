@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION sp_place_order(
 )
 RETURNS JSON
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
   v_tracking_token VARCHAR(20);

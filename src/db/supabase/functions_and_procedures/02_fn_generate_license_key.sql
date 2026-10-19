@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION fn_generate_license_key(
 )
 RETURNS VARCHAR(100)
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
   v_secret TEXT := 'foodie_master_secret_2026_x99_secure';

@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION sp_activate_license(p_license_key VARCHAR(150))
 RETURNS JSON
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
   v_lic RECORD;
