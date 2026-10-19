@@ -11,7 +11,7 @@ export const HeaderPage: React.FC = () => {
     guestSession,
     logout,
     theme,
-    toggleTheme,
+    setTheme,
     toggleSidebar
   } = useAppStore();
 
@@ -36,20 +36,38 @@ export const HeaderPage: React.FC = () => {
         <div className="hidden lg:block flex-1" />
 
         {/* Right: Theme Switcher, User & Cart Controls */}
-        <div className="flex items-center gap-2 ml-auto">
-          {/* Theme Switcher Button */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-500 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
-            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-            aria-label="Toggle Theme"
-          >
-            {theme === 'light' ? (
-              <Moon size={19} className="text-gray-600 hover:text-indigo-600 transition-colors" />
-            ) : (
-              <Sun size={19} className="text-amber-400 hover:text-amber-300 transition-colors" />
-            )}
-          </button>
+        <div className="flex items-center gap-2.5 ml-auto">
+          {/* Explicit Light / Dark Segmented Theme Switcher */}
+          <div className="flex items-center bg-gray-100 dark:bg-gray-800 p-0.5 rounded-xl border border-gray-200 dark:border-gray-700">
+            <button
+              type="button"
+              onClick={() => setTheme('light')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                theme === 'light'
+                  ? 'bg-white text-amber-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
+              }`}
+              title="Switch to Light Mode"
+              aria-label="Switch to Light Mode"
+            >
+              <Sun size={14} className={theme === 'light' ? 'text-amber-500' : ''} />
+              <span className="hidden sm:inline">Light</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme('dark')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                theme === 'dark'
+                  ? 'bg-gray-900 text-indigo-300 shadow-sm border border-gray-700'
+                  : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
+              }`}
+              title="Switch to Dark Mode"
+              aria-label="Switch to Dark Mode"
+            >
+              <Moon size={14} className={theme === 'dark' ? 'text-indigo-400' : ''} />
+              <span className="hidden sm:inline">Dark</span>
+            </button>
+          </div>
 
           {currentUser?.role === 'ADMIN' && (
             <Link

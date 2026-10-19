@@ -33,6 +33,18 @@ export const HomeMenuPage: React.FC = () => {
       .finally(() => setLoading(false));
   }, [currentUser, guestSession]);
 
+  // Helper to ensure food images are appropriate and appetizing
+  const sanitizeFoodImage = (url: string, name: string): string => {
+    if (
+      !url ||
+      url.includes('1573140247632') ||
+      (name.toLowerCase().includes('garlic bread') && (url.includes('1573140247632') || !url.includes('unsplash')))
+    ) {
+      return 'https://images.unsplash.com/photo-1619895092538-128341789043?w=500&q=80';
+    }
+    return url;
+  };
+
   const filteredItems = foodItems.filter(item => {
     const matchesCat = selectedCatId === 0 || item.category_id === selectedCatId;
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -43,13 +55,13 @@ export const HomeMenuPage: React.FC = () => {
     <div className="max-w-5xl mx-auto px-4 py-6 pb-24 sm:pb-12 space-y-8">
       {/* Search Input Bar */}
       <div className="relative">
-        <Search size={18} className="absolute left-4 top-3.5 text-gray-400" />
+        <Search size={18} className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500" />
         <input
           type="text"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           placeholder="Search burgers, pizzas, ramen..."
-          className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-sm"
+          className="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-sm transition-colors"
         />
       </div>
 
@@ -81,14 +93,14 @@ export const HomeMenuPage: React.FC = () => {
 
       {/* Category Horizontal Filter Pills */}
       <div className="space-y-3">
-        <h2 className="text-lg font-black text-gray-900">Categories</h2>
+        <h2 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">Categories</h2>
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
           <button
             onClick={() => setSelectedCatId(0)}
             className={`px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all shadow-sm ${
               selectedCatId === 0
                 ? 'bg-brand-500 text-white shadow-brand-500/30'
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800'
             }`}
           >
             All Items
@@ -100,7 +112,7 @@ export const HomeMenuPage: React.FC = () => {
               className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all shadow-sm ${
                 selectedCatId === cat.id
                   ? 'bg-brand-500 text-white shadow-brand-500/30'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800'
               }`}
             >
               <img src={cat.image_url} alt={cat.name} className="w-5 h-5 rounded-full object-cover" />
@@ -113,14 +125,14 @@ export const HomeMenuPage: React.FC = () => {
       {/* Food Items Catalog Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-black text-gray-900">Popular Delicacies</h2>
-          <span className="text-xs text-gray-500 font-medium">{filteredItems.length} items</span>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">Popular Delicacies</h2>
+          <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{filteredItems.length} items</span>
         </div>
 
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map(n => (
-              <div key={n} className="bg-white rounded-3xl p-3 h-64 animate-pulse border border-gray-100" />
+              <div key={n} className="bg-white dark:bg-gray-900 rounded-3xl p-3 h-64 animate-pulse border border-gray-100 dark:border-gray-800" />
             ))}
           </div>
         ) : (
@@ -128,45 +140,47 @@ export const HomeMenuPage: React.FC = () => {
             {filteredItems.map(item => {
               const inCart = cart.find(c => c.foodItem.id === item.id);
               const isSaved = savedItemIds.includes(item.id);
+              const displayImage = sanitizeFoodImage(item.image_url, item.name);
 
               return (
                 <div
                   key={item.id}
-                  className="bg-white rounded-3xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
+                  className="bg-white dark:bg-gray-900 rounded-3xl p-4 border border-gray-100 dark:border-gray-800/80 shadow-sm hover:shadow-md dark:shadow-black/40 transition-all flex flex-col justify-between group"
                 >
                   <div className="relative overflow-hidden rounded-2xl mb-3">
                     <img
-                      src={item.image_url}
+                      src={displayImage}
                       alt={item.name}
                       className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <button
                       onClick={() => toggleSavedItem(item.id)}
                       className={`absolute top-2.5 right-2.5 p-2 rounded-full backdrop-blur-md transition-colors ${
-                        isSaved ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-white'
+                        isSaved ? 'bg-red-500 text-white' : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800'
                       }`}
+                      aria-label="Toggle favorite"
                     >
                       ♥
                     </button>
                   </div>
 
                   <div className="space-y-1">
-                    <h3 className="font-bold text-gray-900 text-base">{item.name}</h3>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-base">{item.name}</h3>
+                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                       <span className="flex items-center gap-1">
                         <Flame size={14} className="text-amber-500" />
                         {item.calories} Cal
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
-                        <Clock size={14} className="text-gray-400" />
+                        <Clock size={14} className="text-gray-400 dark:text-gray-500" />
                         {item.prep_time_minutes} min
                       </span>
                     </div>
                   </div>
 
-                  <div className="pt-4 flex items-center justify-between border-t border-gray-50 mt-3">
-                    <span className="text-lg font-black text-brand-500">
+                  <div className="pt-4 flex items-center justify-between border-t border-gray-100 dark:border-gray-800/80 mt-3">
+                    <span className="text-lg font-black text-brand-600 dark:text-brand-400">
                       ${Number(item.price).toFixed(2)}
                     </span>
 
@@ -174,7 +188,7 @@ export const HomeMenuPage: React.FC = () => {
                       onClick={() => addToCart(item)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
                         inCart
-                          ? 'bg-brand-100 text-brand-700 hover:bg-brand-200'
+                          ? 'bg-brand-100 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800 hover:bg-brand-200 dark:hover:bg-brand-900'
                           : 'bg-brand-500 text-white hover:bg-brand-600 active:scale-95'
                       }`}
                     >

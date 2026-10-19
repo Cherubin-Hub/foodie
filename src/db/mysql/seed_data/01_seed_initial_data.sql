@@ -80,7 +80,7 @@ INSERT IGNORE INTO tbl_categories (id, name, image_url, sort_order, is_active) V
 
 INSERT IGNORE INTO tbl_food_items (id, category_id, name, image_url, price, calories, prep_time_minutes, is_available) VALUES
   (1, 2, 'Pepperoni Feast', 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=80', 11.99, 540, 20, TRUE),
-  (2, 2, 'Cheesy Garlic Bread', 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=500&q=80', 5.99, 280, 15, TRUE),
+  (2, 2, 'Cheesy Garlic Bread', 'https://images.unsplash.com/photo-1619895092538-128341789043?w=500&q=80', 5.99, 280, 15, TRUE),
   (3, 3, 'Sushi Bento Box', 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=500&q=80', 14.50, 610, 25, TRUE),
   (4, 3, 'Salmon Avocado Maki', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500&q=80', 9.80, 380, 15, TRUE),
   (5, 4, 'Hot & Spicy Bucket', 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=500&q=80', 18.90, 1240, 30, TRUE),

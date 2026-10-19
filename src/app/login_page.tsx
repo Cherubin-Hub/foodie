@@ -62,69 +62,69 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <div className="w-14 h-14 bg-brand-500 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/30">
             <Utensils size={28} className="text-white" />
           </div>
         </div>
-        <p className="mt-3 text-center text-xs font-bold uppercase tracking-wider text-brand-600">
+        <p className="mt-3 text-center text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
           {branding.store_name}
         </p>
-        <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+        <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
           Welcome back
         </h2>
-        <p className="mt-1 text-center text-sm text-gray-600">
+        <p className="mt-1 text-center text-sm text-gray-600 dark:text-gray-400">
           Sign in to your account or continue as a table guest
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-xl shadow-gray-100 rounded-3xl sm:px-10 border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 py-8 px-6 shadow-xl shadow-gray-100 dark:shadow-none rounded-3xl sm:px-10 border border-gray-100 dark:border-gray-800 transition-colors">
           {errorMsg && (
-            <div className="mb-4 p-3 bg-red-50 text-red-700 text-xs rounded-xl font-medium">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/60 text-xs rounded-xl font-medium">
               {errorMsg}
             </div>
           )}
 
           <form className="space-y-4" onSubmit={handleLogin}>
             <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                 Email / Phone
               </label>
               <div className="relative">
-                <Mail size={18} className="absolute left-3.5 top-3.5 text-gray-400" />
+                <Mail size={18} className="absolute left-3.5 top-3.5 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="admin@foodie.com"
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock size={18} className="absolute left-3.5 top-3.5 text-gray-400" />
+                <Lock size={18} className="absolute left-3.5 top-3.5 text-gray-400 dark:text-gray-500" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 cursor-pointer text-gray-600">
+              <label className="flex items-center gap-2 cursor-pointer text-gray-600 dark:text-gray-400">
                 <input
                   type="checkbox"
                   checked={keepSignedIn}
@@ -133,14 +133,14 @@ export const LoginPage: React.FC = () => {
                 />
                 <span>Keep me signed in</span>
               </label>
-              <span className="text-brand-500 font-semibold cursor-pointer hover:underline">
+              <span className="text-brand-600 dark:text-brand-400 font-semibold cursor-pointer hover:underline">
                 Forgot password?
               </span>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-md shadow-brand-500/20 text-sm transition-all"
+              className="w-full py-3.5 bg-brand-500 hover:bg-brand-600 active:scale-[0.99] text-white font-bold rounded-xl shadow-md shadow-brand-500/20 text-sm transition-all"
             >
               Log In
             </button>
@@ -149,10 +149,10 @@ export const LoginPage: React.FC = () => {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
+                <div className="w-full border-t border-gray-200 dark:border-gray-800" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-400 font-semibold">Or</span>
+                <span className="bg-white dark:bg-gray-900 px-2 text-gray-400 dark:text-gray-500 font-semibold">Or</span>
               </div>
             </div>
 
@@ -160,7 +160,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowGuestModal(true)}
-                className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="w-full py-3 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm"
               >
                 <Users size={16} />
                 <span>Continue as Guest (Instant Table Order)</span>
@@ -173,18 +173,18 @@ export const LoginPage: React.FC = () => {
       {/* Guest Name Modal */}
       {showGuestModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-gray-100 dark:border-gray-800 animate-in fade-in zoom-in-95">
             <button
               onClick={() => setShowGuestModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
             >
               <X size={20} />
             </button>
-            <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mb-3">
+            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 rounded-2xl flex items-center justify-center mb-3 border border-emerald-200/50 dark:border-emerald-800/60">
               <Users size={24} />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">Enter Temporary Name</h3>
-            <p className="text-xs text-gray-500 mt-1">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Enter Temporary Name</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Add your name or table number (e.g. "Alex - Table 4") so the kitchen can identify your order.
             </p>
 
@@ -196,13 +196,13 @@ export const LoginPage: React.FC = () => {
                 value={tempName}
                 onChange={e => setTempName(e.target.value)}
                 placeholder="Alex - Table 4"
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
               />
 
               <button
                 type="submit"
                 disabled={loading || !tempName.trim()}
-                className="w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 shadow-md shadow-brand-500/20"
+                className="w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 shadow-md shadow-brand-500/20 active:scale-[0.99] transition-all"
               >
                 <span>{loading ? 'Creating Session...' : 'Start Ordering'}</span>
                 <ArrowRight size={16} />

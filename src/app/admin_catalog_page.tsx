@@ -46,11 +46,11 @@ export const AdminCatalogPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-8 pb-24 space-y-6">
       <div className="flex items-center gap-2">
         <SlidersHorizontal size={24} className="text-brand-500" />
-        <h1 className="text-2xl font-black text-gray-900">Catalog Builder</h1>
+        <h1 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Catalog Builder</h1>
       </div>
 
-      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-        <h2 className="text-sm font-bold text-gray-900">Add New Food Item</h2>
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800/80 shadow-sm space-y-4 transition-colors">
+        <h2 className="text-sm font-bold text-gray-900 dark:text-white">Add New Food Item</h2>
         <form onSubmit={handleCreateItem} className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold">
           <input
             type="text"
@@ -58,7 +58,7 @@ export const AdminCatalogPage: React.FC = () => {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Item Name (e.g. Truffle Fries)"
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           />
           <input
             type="number"
@@ -67,12 +67,12 @@ export const AdminCatalogPage: React.FC = () => {
             value={price}
             onChange={e => setPrice(e.target.value)}
             placeholder="Price (e.g. 8.99)"
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           />
           <select
             value={categoryId}
             onChange={e => setCategoryId(Number(e.target.value))}
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           >
             <option value={1}>Burger</option>
             <option value={2}>Pizza</option>
@@ -87,25 +87,25 @@ export const AdminCatalogPage: React.FC = () => {
             value={calories}
             onChange={e => setCalories(e.target.value)}
             placeholder="Calories"
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           />
           <input
             type="number"
             value={prepTime}
             onChange={e => setPrepTime(e.target.value)}
             placeholder="Prep Time (Minutes)"
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           />
           <input
             type="text"
             value={imageUrl}
             onChange={e => setImageUrl(e.target.value)}
             placeholder="Image URL"
-            className="p-3 bg-gray-50 border border-gray-200 rounded-xl"
+            className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors"
           />
           <button
             type="submit"
-            className="sm:col-span-2 py-3 bg-brand-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm"
+            className="sm:col-span-2 py-3 bg-brand-500 hover:bg-brand-600 active:scale-[0.99] text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm transition-all"
           >
             {saved ? <Check size={16} /> : <Plus size={16} />}
             <span>{saved ? 'Item Created!' : 'Save Food Item'}</span>
@@ -113,13 +113,13 @@ export const AdminCatalogPage: React.FC = () => {
         </form>
       </div>
 
-      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-3">
-        <h3 className="font-bold text-sm text-gray-900">Current Items ({items.length})</h3>
-        <div className="divide-y divide-gray-100">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800/80 shadow-sm space-y-3 transition-colors">
+        <h3 className="font-bold text-sm text-gray-900 dark:text-white">Current Items ({items.length})</h3>
+        <div className="divide-y divide-gray-100 dark:divide-gray-800">
           {items.map(item => (
             <div key={item.id} className="py-2.5 flex justify-between items-center text-xs">
-              <span className="font-bold text-gray-800">{item.name}</span>
-              <span className="text-brand-500 font-bold">${Number(item.price).toFixed(2)}</span>
+              <span className="font-bold text-gray-800 dark:text-gray-200">{item.name}</span>
+              <span className="text-brand-600 dark:text-brand-400 font-bold">${Number(item.price).toFixed(2)}</span>
             </div>
           ))}
         </div>

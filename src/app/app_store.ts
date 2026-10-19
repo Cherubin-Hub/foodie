@@ -131,18 +131,22 @@ export const useAppStore = create<AppState>()(
 
       theme: 'light',
       setTheme: theme => {
-        set({ theme });
+        const next = theme === 'dark' ? 'dark' : 'light';
+        set({ theme: next });
         if (typeof document !== 'undefined') {
-          if (theme === 'dark') {
+          if (next === 'dark') {
             document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
           } else {
             document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
           }
         }
       },
       toggleTheme: () => {
-        const nextTheme = get().theme === 'light' ? 'dark' : 'light';
-        get().setTheme(nextTheme);
+        const current = get().theme;
+        const next = current === 'dark' ? 'light' : 'dark';
+        get().setTheme(next);
       },
 
       isSidebarOpen: false,
@@ -154,6 +158,17 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'foodie_app_storage',
+      onRehydrateStorage: () => state => {
+        if (typeof document !== 'undefined' && state) {
+          if (state.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
+          }
+        }
+      },
       partialize: state => ({
         currentUser: state.currentUser,
         guestSession: state.guestSession,
