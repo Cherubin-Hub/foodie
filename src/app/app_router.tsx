@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAppStore } from './app_store';
 import { HeaderPage } from './header_page';
+import { SidebarPage } from './sidebar_page';
 import { BottomNavPage } from './bottom_nav_page';
 import { SplashPage } from './splash_page';
 import { LoginPage } from './login_page';
@@ -19,7 +20,22 @@ import { AdminRbacPage } from './admin_rbac_page';
 
 export const AppRouter: React.FC = () => {
   const location = useLocation();
-  const { licenseStatus, isLicenseUsable, setLicenseState } = useAppStore();
+  const {
+    licenseStatus,
+    isLicenseUsable,
+    setLicenseState,
+    isSidebarCollapsed,
+    theme
+  } = useAppStore();
+
+  // Synchronize document theme class on mount and changes
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     fetch('/api/license/status')
@@ -48,12 +64,12 @@ export const AppRouter: React.FC = () => {
       }
     } else {
       return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 text-center space-y-4">
-          <div className="w-16 h-16 bg-red-100 text-red-600 rounded-3xl flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center p-6 text-center space-y-4">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-3xl flex items-center justify-center">
             🔒
           </div>
-          <h2 className="text-2xl font-black text-gray-900">Store Offline / Maintenance</h2>
-          <p className="text-xs text-gray-500 max-w-sm">
+          <h2 className="text-2xl font-black text-gray-900 dark:text-white">Store Offline / Maintenance</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm">
             This food ordering terminal requires cryptographic license activation ({licenseStatus}). Please contact the store administrator.
           </p>
           <a
@@ -68,31 +84,43 @@ export const AppRouter: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {!isSplash && <HeaderPage />}
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<HomeMenuPage />} />
-          <Route path="/splash" element={<SplashPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/cart" element={<CartCheckoutPage />} />
-          <Route path="/order/track/:token" element={<OrderTrackerPage />} />
-          <Route path="/saved" element={<SavedItemsPage />} />
-          <Route path="/offers" element={<OffersPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+      {/* Persistent / Responsive Module Selection Sidebar */}
+      {!isSplash && <SidebarPage />}
 
-          {/* Admin Routes */}
-          <Route path="/admin/license" element={<AdminLicensePage />} />
-          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-          <Route path="/admin/catalog" element={<AdminCatalogPage />} />
-          <Route path="/admin/branding" element={<AdminBrandingPage />} />
-          <Route path="/admin/rbac" element={<AdminRbacPage />} />
+      {/* Main Layout Area */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+          !isSplash ? (isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64') : ''
+        }`}
+      >
+        {!isSplash && <HeaderPage />}
 
-          {/* Catch-all redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-      {!isSplash && <BottomNavPage />}
+        <main className="flex-1 pb-16 lg:pb-0">
+          <Routes>
+            <Route path="/" element={<HomeMenuPage />} />
+            <Route path="/splash" element={<SplashPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/cart" element={<CartCheckoutPage />} />
+            <Route path="/order/track/:token" element={<OrderTrackerPage />} />
+            <Route path="/saved" element={<SavedItemsPage />} />
+            <Route path="/offers" element={<OffersPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin/license" element={<AdminLicensePage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/admin/catalog" element={<AdminCatalogPage />} />
+            <Route path="/admin/branding" element={<AdminBrandingPage />} />
+            <Route path="/admin/rbac" element={<AdminRbacPage />} />
+
+            {/* Catch-all redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+
+        {!isSplash && <BottomNavPage />}
+      </div>
     </div>
   );
 };

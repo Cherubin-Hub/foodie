@@ -178,37 +178,37 @@ export const AdminLicensePage: React.FC = () => {
     <div className="max-w-2xl mx-auto px-4 py-12 pb-24 space-y-8">
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-3xl flex items-center justify-center mx-auto shadow-md shadow-brand-500/20">
+        <div className="w-16 h-16 bg-brand-100 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 rounded-3xl flex items-center justify-center mx-auto shadow-md shadow-brand-500/20">
           <KeyRound size={32} />
         </div>
-        <h1 className="text-3xl font-black text-gray-900 tracking-tight">Offline Cryptographic License</h1>
-        <p className="text-xs text-gray-500 max-w-md mx-auto">
+        <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Offline Cryptographic License</h1>
+        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto">
           Manage cryptographic store activation, verify expiration time remaining, and rotate hardware request nonces.
         </p>
       </div>
 
       {/* Expiration & Countdown Status Card */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-5">
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm space-y-5 transition-colors">
+        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-2">
             {currentStatus === 'VALID' && timeRemaining && !timeRemaining.isExpired ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-bold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-full text-xs font-bold">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <ShieldCheck size={14} />
                 <span>Active & Verified License</span>
               </span>
             ) : currentStatus === 'EXPIRED' || (timeRemaining && timeRemaining.isExpired) ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-bold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 rounded-full text-xs font-bold">
                 <AlertTriangle size={14} />
                 <span>License Expired</span>
               </span>
             ) : currentStatus === 'CLOCK_TAMPERED' ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-bold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded-full text-xs font-bold">
                 <AlertCircle size={14} />
                 <span>Clock Tampered</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-700 border border-gray-200 rounded-full text-xs font-bold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full text-xs font-bold">
                 <Clock size={14} />
                 <span>Store Inactive (Unlicensed)</span>
               </span>
@@ -258,49 +258,49 @@ export const AdminLicensePage: React.FC = () => {
 
               {/* 4 Digit Tiles */}
               <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
-                <div className="p-3 bg-gray-50 rounded-2xl border border-gray-200">
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900">
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900 dark:text-white">
                     {String(timeRemaining.days).padStart(2, '0')}
                   </div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-400 mt-1">
                     Days
                   </div>
                 </div>
 
-                <div className="p-3 bg-gray-50 rounded-2xl border border-gray-200">
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900">
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900 dark:text-white">
                     {String(timeRemaining.hours).padStart(2, '0')}
                   </div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-400 mt-1">
                     Hours
                   </div>
                 </div>
 
-                <div className="p-3 bg-gray-50 rounded-2xl border border-gray-200">
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900">
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900 dark:text-white">
                     {String(timeRemaining.minutes).padStart(2, '0')}
                   </div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-400 mt-1">
                     Minutes
                   </div>
                 </div>
 
-                <div className="p-3 bg-brand-50/50 rounded-2xl border border-brand-200">
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-brand-600">
+                <div className="p-3 bg-brand-50/50 dark:bg-brand-950/50 rounded-2xl border border-brand-200 dark:border-brand-800">
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-brand-600 dark:text-brand-400">
                     {String(timeRemaining.seconds).padStart(2, '0')}
                   </div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-brand-500 mt-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-brand-500 dark:text-brand-400 mt-1">
                     Seconds
                   </div>
                 </div>
               </div>
 
               {expiresAt && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 pt-1">
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 pt-1">
                   <Calendar size={14} className="text-gray-400" />
                   <span>
                     Expires on:{' '}
-                    <strong className="text-gray-700">
+                    <strong className="text-gray-700 dark:text-gray-200">
                       {new Date(expiresAt).toLocaleDateString(undefined, {
                         weekday: 'short',
                         year: 'numeric',
@@ -340,9 +340,9 @@ export const AdminLicensePage: React.FC = () => {
       </div>
 
       {/* Installation Request Code Card */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm space-y-6 transition-colors">
         <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+          <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
             Installation Request Code
           </label>
           <div className="flex gap-2">
@@ -350,17 +350,17 @@ export const AdminLicensePage: React.FC = () => {
               type="text"
               readOnly
               value={requestCode}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono font-bold text-gray-800"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-mono font-bold text-gray-800 dark:text-gray-100"
             />
             <button
               onClick={handleCopy}
-              className="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+              className="px-4 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
             >
               {copied ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
               <span>{copied ? 'Copied' : 'Copy'}</span>
             </button>
           </div>
-          <p className="text-[11px] text-gray-400 mt-1.5">
+          <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1.5">
             Send this Request Code to your vendor to generate an activation key matching your terminal hardware nonce.
           </p>
         </div>
@@ -368,7 +368,7 @@ export const AdminLicensePage: React.FC = () => {
         {/* License Key Activation Form */}
         <form onSubmit={handleActivate} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
               Signed License Key
             </label>
             <input
@@ -377,7 +377,7 @@ export const AdminLicensePage: React.FC = () => {
               value={licenseKey}
               onChange={e => setLicenseKey(e.target.value)}
               placeholder="LIC-FOODIE_POS-30D-A9F3K2-XXXXXXXXXXXX"
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-mono uppercase text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
 

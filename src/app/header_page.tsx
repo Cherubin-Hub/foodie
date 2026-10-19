@@ -1,35 +1,73 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, MapPin, User, LogOut, Shield } from 'lucide-react';
+import { ShoppingBag, MapPin, User, LogOut, Shield, Menu, Sun, Moon } from 'lucide-react';
 import { useAppStore } from './app_store';
 
 export const HeaderPage: React.FC = () => {
   const navigate = useNavigate();
-  const { branding, cart, currentUser, guestSession, logout } = useAppStore();
+  const {
+    branding,
+    cart,
+    currentUser,
+    guestSession,
+    logout,
+    theme,
+    toggleTheme,
+    toggleSidebar
+  } = useAppStore();
+
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-black text-brand-500 tracking-tight transition-transform group-hover:scale-105">
-            {branding.store_name}
-          </span>
-        </Link>
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        {/* Left: Sidebar Toggle & Branding */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleSidebar}
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
+            title="Toggle Navigation Sidebar"
+            aria-label="Toggle Navigation Sidebar"
+          >
+            <Menu size={22} />
+          </button>
 
-        <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 bg-gray-100/80 px-3 py-1.5 rounded-full">
-          <MapPin size={14} className="text-brand-500 flex-shrink-0" />
-          <span className="truncate max-w-[240px] font-medium">{branding.default_address}</span>
+          <Link to="/" className="flex items-center gap-2 group">
+            <span className="text-2xl font-black text-brand-500 dark:text-brand-400 tracking-tight transition-transform group-hover:scale-105">
+              {branding.store_name}
+            </span>
+          </Link>
         </div>
 
+        {/* Center: Store Address */}
+        <div className="hidden md:flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/80 px-3.5 py-1.5 rounded-full">
+          <MapPin size={14} className="text-brand-500 flex-shrink-0" />
+          <span className="truncate max-w-[260px] font-medium">{branding.default_address}</span>
+        </div>
+
+        {/* Right: Theme Switcher, User & Cart Controls */}
         <div className="flex items-center gap-2">
+          {/* Theme Switcher Button */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-500 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'light' ? (
+              <Moon size={19} className="text-gray-600 hover:text-indigo-600 transition-colors" />
+            ) : (
+              <Sun size={19} className="text-amber-400 hover:text-amber-300 transition-colors" />
+            )}
+          </button>
+
           {currentUser?.role === 'ADMIN' && (
             <Link
               to="/admin/dashboard"
-              className="px-2.5 py-1.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg text-xs font-semibold flex items-center gap-1 hover:bg-amber-100 transition-colors"
+              className="px-2.5 py-1.5 bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded-lg text-xs font-semibold flex items-center gap-1 hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors"
             >
               <Shield size={14} />
-              <span>Admin</span>
+              <span className="hidden sm:inline">Admin</span>
             </Link>
           )}
 
@@ -37,7 +75,7 @@ export const HeaderPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/profile"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium transition-colors"
               >
                 <User size={14} />
                 <span className="hidden sm:inline">{currentUser.fullName}</span>
@@ -55,7 +93,7 @@ export const HeaderPage: React.FC = () => {
             </div>
           ) : guestSession ? (
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
+              <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-full text-xs font-semibold">
                 {guestSession.temporaryName}
               </span>
               <button
@@ -80,7 +118,7 @@ export const HeaderPage: React.FC = () => {
 
           <Link
             to="/cart"
-            className="relative p-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all"
+            className="relative p-2 text-gray-700 dark:text-gray-200 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
             aria-label="View Shopping Cart"
           >
             <ShoppingBag size={20} />

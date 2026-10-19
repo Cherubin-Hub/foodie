@@ -18,7 +18,7 @@ export const BottomNavPage: React.FC = () => {
   const visibleItems = navItems.filter(item => canViewModule(item.module));
 
   return (
-    <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200/80 px-2 py-1 shadow-lg">
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-200/80 dark:border-gray-800 px-2 py-1 shadow-lg transition-colors">
       <div className="flex items-center justify-around h-14">
         {visibleItems.map(item => {
           const Icon = item.icon;
@@ -28,7 +28,9 @@ export const BottomNavPage: React.FC = () => {
               to={item.to}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center relative py-1 px-3 text-[11px] font-medium transition-colors ${
-                  isActive ? 'text-brand-500 font-bold' : 'text-gray-500 hover:text-gray-800'
+                  isActive
+                    ? 'text-brand-500 dark:text-brand-400 font-bold'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
                 }`
               }
             >

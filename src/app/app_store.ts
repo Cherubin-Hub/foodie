@@ -40,6 +40,17 @@ interface AppState {
   permittedModules: ModulePermission[];
   setPermittedModules: (modules: ModulePermission[]) => void;
   canViewModule: (moduleCode: string) => boolean;
+
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  toggleTheme: () => void;
+
+  isSidebarOpen: boolean;
+  setSidebarOpen: (isOpen: boolean) => void;
+  toggleSidebar: () => void;
+
+  isSidebarCollapsed: boolean;
+  toggleSidebarCollapsed: () => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -116,7 +127,30 @@ export const useAppStore = create<AppState>()(
         if (currentUser?.role === 'ADMIN') return true;
         const mod = permittedModules.find(m => m.module_code === moduleCode);
         return Boolean(mod?.can_view);
-      }
+      },
+
+      theme: 'light',
+      setTheme: theme => {
+        set({ theme });
+        if (typeof document !== 'undefined') {
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      },
+      toggleTheme: () => {
+        const nextTheme = get().theme === 'light' ? 'dark' : 'light';
+        get().setTheme(nextTheme);
+      },
+
+      isSidebarOpen: false,
+      setSidebarOpen: isSidebarOpen => set({ isSidebarOpen }),
+      toggleSidebar: () => set(state => ({ isSidebarOpen: !state.isSidebarOpen })),
+
+      isSidebarCollapsed: false,
+      toggleSidebarCollapsed: () => set(state => ({ isSidebarCollapsed: !state.isSidebarCollapsed }))
     }),
     {
       name: 'foodie_app_storage',
@@ -124,7 +158,9 @@ export const useAppStore = create<AppState>()(
         currentUser: state.currentUser,
         guestSession: state.guestSession,
         cart: state.cart,
-        savedItemIds: state.savedItemIds
+        savedItemIds: state.savedItemIds,
+        theme: state.theme,
+        isSidebarCollapsed: state.isSidebarCollapsed
       })
     }
   )
