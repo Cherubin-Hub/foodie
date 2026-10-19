@@ -11,7 +11,13 @@ interface AppState {
   licenseStatus: 'VALID' | 'EXPIRED' | 'CLOCK_TAMPERED' | 'INACTIVE' | 'LOADING';
   isLicenseUsable: boolean;
   requestCode: string;
-  setLicenseState: (status: 'VALID' | 'EXPIRED' | 'CLOCK_TAMPERED' | 'INACTIVE' | 'LOADING', isUsable: boolean, reqCode?: string) => void;
+  licenseExpiresAt: string | null;
+  setLicenseState: (
+    status: 'VALID' | 'EXPIRED' | 'CLOCK_TAMPERED' | 'INACTIVE' | 'LOADING',
+    isUsable: boolean,
+    reqCode?: string,
+    expiresAt?: string | null
+  ) => void;
 
   branding: StoreBranding;
   setBranding: (branding: StoreBranding) => void;
@@ -42,8 +48,14 @@ export const useAppStore = create<AppState>()(
       licenseStatus: 'LOADING',
       isLicenseUsable: false,
       requestCode: '',
-      setLicenseState: (licenseStatus, isLicenseUsable, reqCode) =>
-        set(state => ({ licenseStatus, isLicenseUsable, requestCode: reqCode || state.requestCode })),
+      licenseExpiresAt: null,
+      setLicenseState: (licenseStatus, isLicenseUsable, reqCode, expiresAt) =>
+        set(state => ({
+          licenseStatus,
+          isLicenseUsable,
+          requestCode: reqCode || state.requestCode,
+          licenseExpiresAt: expiresAt !== undefined ? expiresAt : state.licenseExpiresAt
+        })),
 
       branding: {
         store_name: 'Foodie.',

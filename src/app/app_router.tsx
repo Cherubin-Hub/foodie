@@ -25,7 +25,12 @@ export const AppRouter: React.FC = () => {
     fetch('/api/license/status')
       .then(res => res.json())
       .then(data => {
-        setLicenseState(data.status || 'INACTIVE', Boolean(data.is_usable), data.installation_request_code);
+        setLicenseState(
+          data.status || 'INACTIVE',
+          Boolean(data.is_usable),
+          data.installation_request_code,
+          data.expires_at
+        );
       })
       .catch(() => {
         setLicenseState('INACTIVE', false);
