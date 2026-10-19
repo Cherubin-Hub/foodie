@@ -12,8 +12,6 @@ import {
   Palette,
   ShieldCheck,
   KeyRound,
-  Sun,
-  Moon,
   ChevronLeft,
   ChevronRight,
   X,
@@ -40,8 +38,6 @@ export const SidebarPage: React.FC = () => {
     currentUser,
     guestSession,
     licenseStatus,
-    theme,
-    setTheme,
     isSidebarOpen,
     setSidebarOpen,
     isSidebarCollapsed,
@@ -78,47 +74,65 @@ export const SidebarPage: React.FC = () => {
     <div className="h-full flex flex-col justify-between bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300">
       {/* Top Branding Header */}
       <div>
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100 dark:border-gray-800">
-          <NavLink
-            to="/"
-            onClick={() => setSidebarOpen(false)}
-            className="flex items-center gap-2.5 overflow-hidden"
-          >
-            <div className="w-9 h-9 rounded-xl bg-brand-500 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-brand-500/20">
-              <Store size={20} />
-            </div>
-            {!isSidebarCollapsed && (
-              <div className="truncate">
-                <span className="text-lg font-black text-gray-900 dark:text-white tracking-tight">
-                  {branding.store_name}
-                </span>
-                <span className="block text-[10px] font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
-                  Food Platform
-                </span>
-              </div>
-            )}
-          </NavLink>
+        <div
+          className={`h-16 flex items-center border-b border-gray-100 dark:border-gray-800 ${
+            isSidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'
+          }`}
+        >
+          {isSidebarCollapsed ? (
+            <button
+              onClick={toggleSidebarCollapsed}
+              className="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center shadow-md shadow-brand-500/20 hover:bg-brand-600 transition-all group"
+              title="Click to expand sidebar"
+              aria-label="Expand sidebar"
+            >
+              <Store size={20} className="group-hover:hidden transition-transform" />
+              <ChevronRight size={20} className="hidden group-hover:block transition-transform" />
+            </button>
+          ) : (
+            <>
+              <NavLink
+                to="/"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-2.5 overflow-hidden"
+              >
+                <div className="w-9 h-9 rounded-xl bg-brand-500 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-brand-500/20">
+                  <Store size={20} />
+                </div>
+                <div className="truncate">
+                  <span className="text-lg font-black text-gray-900 dark:text-white tracking-tight">
+                    {branding.store_name}
+                  </span>
+                  <span className="block text-[10px] font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
+                    Food Platform
+                  </span>
+                </div>
+              </NavLink>
 
-          {/* Desktop Collapse Toggle */}
-          <button
-            onClick={toggleSidebarCollapsed}
-            className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-          >
-            {isSidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          </button>
+              {/* Desktop Collapse Toggle */}
+              <button
+                onClick={toggleSidebarCollapsed}
+                className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                title="Collapse Sidebar"
+                aria-label="Collapse Sidebar"
+              >
+                <ChevronLeft size={18} />
+              </button>
+            </>
+          )}
 
           {/* Mobile Close Button */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-auto"
+            aria-label="Close Mobile Sidebar"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Navigation Sections */}
-        <div className="p-3 space-y-6 overflow-y-auto max-h-[calc(100vh-14rem)]">
+        <div className="p-3 space-y-6 overflow-y-auto max-h-[calc(100vh-10rem)]">
           {/* Store Modules */}
           <div>
             {!isSidebarCollapsed && (
@@ -214,39 +228,9 @@ export const SidebarPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Footer: Light / Dark Mode Switcher & User Profile */}
-      <div className="p-3 border-t border-gray-100 dark:border-gray-800 space-y-3">
-        {/* Light / Dark Mode Selection Control */}
-        <div className="bg-gray-100 dark:bg-gray-800/70 p-1 rounded-2xl flex items-center gap-1">
-          <button
-            onClick={() => setTheme('light')}
-            className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              theme === 'light'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'
-            }`}
-            title="Light Theme"
-          >
-            <Sun size={15} className={theme === 'light' ? 'text-amber-500' : ''} />
-            {!isSidebarCollapsed && <span>Light</span>}
-          </button>
-
-          <button
-            onClick={() => setTheme('dark')}
-            className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              theme === 'dark'
-                ? 'bg-gray-900 text-white shadow-sm'
-                : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'
-            }`}
-            title="Dark Theme"
-          >
-            <Moon size={15} className={theme === 'dark' ? 'text-indigo-400' : ''} />
-            {!isSidebarCollapsed && <span>Dark</span>}
-          </button>
-        </div>
-
-        {/* User Identity Preview */}
-        {!isSidebarCollapsed && (
+      {/* Bottom Footer: User Identity Preview (Light/Dark toggle removed) */}
+      <div className="p-3 border-t border-gray-100 dark:border-gray-800">
+        {!isSidebarCollapsed ? (
           <div className="px-2 py-1 flex items-center justify-between text-xs">
             <div className="truncate">
               <span className="block font-bold text-gray-800 dark:text-gray-200 truncate">
@@ -257,6 +241,15 @@ export const SidebarPage: React.FC = () => {
               </span>
             </div>
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+        ) : (
+          <div
+            className="flex justify-center py-1"
+            title={currentUser?.fullName || guestSession?.temporaryName || 'Guest Diner'}
+          >
+            <div className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 font-bold text-xs shadow-sm">
+              {(currentUser?.fullName?.[0] || guestSession?.temporaryName?.[0] || 'G').toUpperCase()}
+            </div>
           </div>
         )}
       </div>
