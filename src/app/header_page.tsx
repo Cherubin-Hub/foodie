@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, MapPin, User, LogOut, Shield, Menu, Sun, Moon } from 'lucide-react';
+import { ShoppingBag, User, LogOut, Shield, Menu, Sun, Moon } from 'lucide-react';
 import { useAppStore } from './app_store';
 
 export const HeaderPage: React.FC = () => {
   const navigate = useNavigate();
   const {
-    branding,
     cart,
     currentUser,
     guestSession,
@@ -21,8 +20,8 @@ export const HeaderPage: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        {/* Left: Sidebar Toggle & Branding */}
-        <div className="flex items-center gap-3">
+        {/* Left: Mobile Sidebar Drawer Toggle (Hidden on Desktop where Sidebar is present) */}
+        <div className="flex items-center gap-3 lg:hidden">
           <button
             onClick={toggleSidebar}
             className="p-2 text-gray-600 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
@@ -31,22 +30,13 @@ export const HeaderPage: React.FC = () => {
           >
             <Menu size={22} />
           </button>
-
-          <Link to="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-black text-brand-500 dark:text-brand-400 tracking-tight transition-transform group-hover:scale-105">
-              {branding.store_name}
-            </span>
-          </Link>
         </div>
 
-        {/* Center: Store Address */}
-        <div className="hidden md:flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/80 px-3.5 py-1.5 rounded-full">
-          <MapPin size={14} className="text-brand-500 flex-shrink-0" />
-          <span className="truncate max-w-[260px] font-medium">{branding.default_address}</span>
-        </div>
+        {/* Desktop Spacer to keep right controls aligned to right */}
+        <div className="hidden lg:block flex-1" />
 
         {/* Right: Theme Switcher, User & Cart Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto">
           {/* Theme Switcher Button */}
           <button
             onClick={toggleTheme}

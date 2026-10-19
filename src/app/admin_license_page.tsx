@@ -87,12 +87,10 @@ export const AdminLicensePage: React.FC = () => {
   const [licenseKey, setLicenseKey] = useState('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [_currentTime, setCurrentTime] = useState<Date>(new Date());
 
   const fetchStatus = async () => {
-    setRefreshing(true);
     try {
       const res = await fetch('/api/license/status');
       const data = await res.json();
@@ -113,8 +111,6 @@ export const AdminLicensePage: React.FC = () => {
       );
     } catch (err) {
       console.error('[AdminLicensePage] Failed to fetch license status:', err);
-    } finally {
-      setRefreshing(false);
     }
   };
 
@@ -214,16 +210,6 @@ export const AdminLicensePage: React.FC = () => {
               </span>
             )}
           </div>
-
-          <button
-            onClick={fetchStatus}
-            disabled={refreshing}
-            className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg transition-colors flex items-center gap-1 text-xs"
-            title="Refresh License Status"
-          >
-            <RefreshCw size={14} className={refreshing ? 'animate-spin text-brand-500' : ''} />
-            <span className="text-[11px] font-semibold text-gray-500">Sync</span>
-          </button>
         </div>
 
         {/* Dynamic Countdown Section */}
@@ -248,16 +234,13 @@ export const AdminLicensePage: React.FC = () => {
           ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+                <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                   Time Left Before Expiration
-                </span>
-                <span className="text-xs font-mono font-bold text-brand-600 bg-brand-50 px-2.5 py-0.5 rounded-lg border border-brand-200">
-                  {timeRemaining.formatted}
                 </span>
               </div>
 
-              {/* 4 Digit Tiles */}
-              <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+              {/* 3 Digit Tiles: Days, Hours, Minutes */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
                 <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                   <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900 dark:text-white">
                     {String(timeRemaining.days).padStart(2, '0')}
@@ -282,15 +265,6 @@ export const AdminLicensePage: React.FC = () => {
                   </div>
                   <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-400 mt-1">
                     Minutes
-                  </div>
-                </div>
-
-                <div className="p-3 bg-brand-50/50 dark:bg-brand-950/50 rounded-2xl border border-brand-200 dark:border-brand-800">
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-brand-600 dark:text-brand-400">
-                    {String(timeRemaining.seconds).padStart(2, '0')}
-                  </div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-brand-500 dark:text-brand-400 mt-1">
-                    Seconds
                   </div>
                 </div>
               </div>
